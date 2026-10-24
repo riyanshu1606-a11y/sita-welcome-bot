@@ -1,17 +1,32 @@
+
+const express = require("express");
 const { Telegraf } = require("telegraf");
 
-const token = process.env.BOT_TOKEN;
+const app = express();
+const PORT = process.env.PORT || 3000;
+const TOKEN = process.env.BOT_TOKEN;
 
-if (!token) {
-  throw new Error("BOT_TOKEN is missing!");
+app.get("/", (req, res) => {
+  res.status(200).send("SITA Welcome Bot is running!");
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Web server listening on port ${PORT}`);
+});
+
+if (!TOKEN) {
+  console.error("BOT_TOKEN environment variable is missing!");
+  process.exit(1);
 }
 
-const bot = new Telegraf(token);
+const bot = new Telegraf(TOKEN);
 
 bot.on("new_chat_members", async (ctx) => {
-  const members = ctx.message.new_chat_members;
-
-  for (const member of members) {
+  for (const member of ctx.message.new_chat_members) {
     if (member.is_bot) continue;
 
     const name = member.first_name || "Friend";
@@ -26,9 +41,9 @@ bot.on("new_chat_members", async (ctx) => {
 });
 
 bot.launch()
-  .then(() => console.log("SITA Welcome Bot is running!"))
+  .then(() => console.log("SITA Welcome Bot started successfully!"))
   .catch((error) => {
-    console.error("Bot failed to start:", error);
+    console.error("Telegram bot failed to start:", error);
     process.exit(1);
   });
 
