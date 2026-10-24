@@ -32,9 +32,11 @@ bot.on("new_chat_members", async (ctx) => {
     const name = member.first_name || "Friend";
 
     const message =
-      `🎉 Welcome to SITA Team, ${name}! 💖\n\n` +
-      `💸 Start your earning now! 🚀💰\n\n` +
-      `🔥 Best of luck with your earning journey! ✨`;
+  `🎉 SITA टीम में आपका स्वागत है, ${name}! 💖\n\n` +
+  `💸 अब अपनी कमाई शुरू करें! 🚀💰\n\n` +
+  `🔥 आपकी कमाई की यात्रा के लिए शुभकामनाएँ! ✨`;
+
+await ctx.reply(message);
 
     await ctx.reply(message);
   }
